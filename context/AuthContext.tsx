@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   OAuthProvider,
   onAuthStateChanged,
@@ -12,10 +18,10 @@ import { auth } from "../lib/firebase";
 //   userData: StoredUserInfo | null;
 // }
 
-interface StoredUserInfo {
-  userProviderId: string;
-  userId: string;
-}
+// interface StoredUserInfo {
+//   userProviderId: string;
+//   userId: string;
+// }
 
 // export const AuthContext = createContext<AuthState>();
 
@@ -30,8 +36,14 @@ export function AuthProvider({ children }: Props) {
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
 function useProviderAuth() {
   const [user, setUser] = useState<User | null>(null);
+
+  console.log(user);
 
   const signInWithGithub = () => {
     const provider = new OAuthProvider("github.com");
