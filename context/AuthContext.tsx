@@ -13,17 +13,13 @@ import {
 } from "firebase/auth";
 import { auth } from "../lib/firebase";
 
-// export interface AuthState {
-//   currentUser: User | null;
-//   userData: StoredUserInfo | null;
-// }
-
-// interface StoredUserInfo {
-//   userProviderId: string;
-//   userId: string;
-// }
-
-// export const AuthContext = createContext<AuthState>();
+interface StoredUserInfo {
+  uid: string;
+  email: string;
+  displayName: string;
+  providerId: string;
+  photoUrl: string;
+}
 
 const AuthContext = createContext(null);
 
@@ -41,32 +37,40 @@ export const useAuth = () => {
 };
 
 function useProviderAuth() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<StoredUserInfo | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  console.log(user);
+  const handleUser = (rawUser: User | null) => {
+    if (rawUser) {
+      const user = formatUser(rawUser);
+
+      setLoading(false);
+      setUser(user);
+      return user;
+    } else {
+      setLoading(false);
+      setUser(null);
+      return false;
+    }
+  };
 
   const signInWithGithub = () => {
+    setLoading(true);
     const provider = new OAuthProvider("github.com");
-    signInWithPopup(auth, provider).then((response) => {
-      setUser(response.user);
-      return response.user;
+    return signInWithPopup(auth, provider).then((response) => {
+      handleUser(response.user);
+      // return response.user;
     });
   };
 
   const signOut = () => {
     auth.signOut().then(() => {
-      setUser(null);
+      handleUser(null);
     });
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
+    const unsubscribe = onAuthStateChanged(auth, handleUser);
 
     return () => unsubscribe();
   }, []);
@@ -77,3 +81,13 @@ function useProviderAuth() {
     signOut,
   };
 }
+
+const formatUser = (user: User) => {
+  return {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName,
+    providerId: user.providerData[0].providerId,
+    photoUrl: user.photoURL,
+  };
+};
