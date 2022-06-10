@@ -77,6 +77,7 @@ function useProviderAuth() {
 
   return {
     user,
+    loading,
     signInWithGithub,
     signOut,
   };
