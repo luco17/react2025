@@ -1,6 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
-import { StoredUserInfo } from "../context/AuthContext";
+import { StoredUserInfo } from "@/context/AuthContext";
 
 export function createUser(user: StoredUserInfo) {
   const uid = user.uid;

@@ -13,8 +13,8 @@ import {
   User,
 } from "firebase/auth";
 
-import { auth } from "../lib/firebase";
-import { createUser } from "../lib/firestore";
+import { auth } from "@/lib/firebase";
+import { createUser } from "@/lib/firestore";
 
 export interface StoredUserInfo {
   uid: string;
