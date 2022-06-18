@@ -5,15 +5,18 @@ import {
   useEffect,
   useState,
 } from "react";
+
 import {
   OAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
   User,
 } from "firebase/auth";
-import { auth } from "../lib/firebase";
 
-interface StoredUserInfo {
+import { auth } from "../lib/firebase";
+import { createUser } from "../lib/firestore";
+
+export interface StoredUserInfo {
   uid: string;
   email: string;
   displayName: string;
@@ -45,6 +48,7 @@ function useProviderAuth() {
       const user = formatUser(rawUser);
 
       setLoading(false);
+      createUser(user);
       setUser(user);
       return user;
     } else {
@@ -59,7 +63,6 @@ function useProviderAuth() {
     const provider = new OAuthProvider("github.com");
     return signInWithPopup(auth, provider).then((response) => {
       handleUser(response.user);
-      // return response.user;
     });
   };
 
