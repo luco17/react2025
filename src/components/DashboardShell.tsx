@@ -113,7 +113,14 @@ export default function DashboardShell({ children }) {
         ) : null}
       </Box>
 
-      <Container my={16}>
+      <Flex
+        flexDirection="column"
+        maxW="4xl"
+        justifyContent="center"
+        ml="auto"
+        mr="auto"
+        my={16}
+      >
         <Breadcrumb>
           <BreadcrumbItem isCurrentPage>
             <BreadcrumbLink>Sites</BreadcrumbLink>
@@ -121,7 +128,7 @@ export default function DashboardShell({ children }) {
           <Heading>Sites</Heading>
         </Breadcrumb>
         <Box>{children}</Box>
-      </Container>
+      </Flex>
     </>
   );
 }
