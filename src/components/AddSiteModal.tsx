@@ -1,3 +1,7 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+
 import {
   useDisclosure,
   Button,
@@ -13,12 +17,18 @@ import {
   ModalFooter,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+
+interface FormInputs {
+  siteName: string;
+  siteUrl: string;
+}
 
 export default function AddSiteModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const initialRef = React.useRef(null);
+  const { register, handleSubmit } = useForm<FormInputs>();
+
+  const createSite: SubmitHandler<FormInputs> = (values) => console.log(values);
 
   return (
     <>
@@ -42,18 +52,25 @@ export default function AddSiteModal() {
 
       <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add Site</ModalHeader>
+        <ModalContent as="form" onSubmit={handleSubmit(createSite)}>
+          <ModalHeader fontWeight={"bold"}>Add Site</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>Site Name</FormLabel>
-              <Input ref={initialRef} placeholder="My Awesome Blog" />
+              <Input
+                ref={initialRef}
+                placeholder="My Awesome Blog"
+                {...register("siteName", { required: true })}
+              />
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>Link</FormLabel>
-              <Input placeholder="https://myawesomeblog.xyz" />
+              <FormLabel>URL</FormLabel>
+              <Input
+                placeholder="https://myawesomeblog.xyz"
+                {...register("siteUrl", { required: true })}
+              />
             </FormControl>
           </ModalBody>
 
@@ -61,7 +78,12 @@ export default function AddSiteModal() {
             <Button bg="" _hover={{ bg: "", opacity: 0.8 }} onClick={onClose}>
               Cancel
             </Button>
-            <Button _hover={{ opacity: 0.9 }} bg="teal.500" mr={3}>
+            <Button
+              _hover={{ opacity: 0.9 }}
+              bg="teal.500"
+              mr={3}
+              type="submit"
+            >
               Create
             </Button>
           </ModalFooter>
