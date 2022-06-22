@@ -3,7 +3,6 @@ import {
   Center,
   Text,
   Flex,
-  Button,
   useColorModeValue,
   Container,
 } from "@chakra-ui/react";

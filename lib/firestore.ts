@@ -1,6 +1,7 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "./firebase";
 import { StoredUserInfo } from "@/context/AuthContext";
+import { FormInputs } from "components/AddSiteModal";
 
 export function createUser(user: StoredUserInfo) {
   const uid = user.uid;
@@ -12,4 +13,10 @@ export function createUser(user: StoredUserInfo) {
   };
 
   return setDoc(doc(db, "users", uid), data);
+}
+
+export function createSite(siteData: FormInputs) {
+  const site = addDoc(collection(db, "sites"), siteData);
+
+  return site;
 }

@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  useToast,
   FormControl,
   FormLabel,
   Input,
@@ -18,7 +19,9 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-interface FormInputs {
+import { createSite } from "@/lib/firestore";
+
+export interface FormInputs {
   siteName: string;
   siteUrl: string;
 }
@@ -27,8 +30,19 @@ export default function AddSiteModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const { register, handleSubmit } = useForm<FormInputs>();
+  const toast = useToast();
 
-  const createSite: SubmitHandler<FormInputs> = (values) => console.log(values);
+  const addSite: SubmitHandler<FormInputs> = (values) => {
+    createSite(values);
+    toast({
+      title: "Success!",
+      description: "We've added your site",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    onClose();
+  };
 
   return (
     <>
@@ -52,7 +66,7 @@ export default function AddSiteModal() {
 
       <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent as="form" onSubmit={handleSubmit(createSite)}>
+        <ModalContent as="form" onSubmit={handleSubmit(addSite)}>
           <ModalHeader fontWeight={"bold"}>Add Site</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
