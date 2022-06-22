@@ -20,10 +20,16 @@ import {
 } from "@chakra-ui/react";
 
 import { createSite } from "@/lib/firestore";
+import { useAuth } from "@/context/AuthContext";
 
-export interface FormInputs {
+interface FormInputs {
   siteName: string;
   siteUrl: string;
+}
+
+export interface SiteData extends FormInputs {
+  siteAuthor: string;
+  entryDate: string;
 }
 
 export default function AddSiteModal() {
@@ -31,9 +37,19 @@ export default function AddSiteModal() {
   const initialRef = React.useRef(null);
   const { register, handleSubmit } = useForm<FormInputs>();
   const toast = useToast();
+  const auth = useAuth();
 
   const addSite: SubmitHandler<FormInputs> = (values) => {
-    createSite(values);
+    const { siteName, siteUrl } = values;
+
+    const newSite: SiteData = {
+      siteAuthor: auth.user.uid,
+      entryDate: new Date().toISOString(),
+      siteName,
+      siteUrl,
+    };
+
+    createSite(newSite);
     toast({
       title: "Success!",
       description: "We've added your site",
