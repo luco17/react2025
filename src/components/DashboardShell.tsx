@@ -19,7 +19,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Text,
-  Container,
   Heading,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -87,7 +86,7 @@ export default function DashboardShell({ children }) {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar size={"sm"} src={auth.user.photoUrl} />
+                <Avatar size={"sm"} src={auth.user?.photoUrl} />
               </MenuButton>
               <MenuList>
                 <MenuItem>Link 1</MenuItem>
