@@ -7,7 +7,6 @@ import {
   Container,
 } from "@chakra-ui/react";
 import AddSiteModal from "./AddSiteModal";
-import DashboardShell from "./DashboardShell";
 
 export default function EmptyState() {
   return (

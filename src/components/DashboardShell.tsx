@@ -119,6 +119,7 @@ export default function DashboardShell({ children }) {
         ml="auto"
         mr="auto"
         my={16}
+        px={8}
       >
         <Breadcrumb>
           <BreadcrumbItem isCurrentPage>
