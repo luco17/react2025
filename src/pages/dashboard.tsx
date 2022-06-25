@@ -4,12 +4,11 @@ import DashboardShell from "components/DashboardShell";
 import EmptyState from "components/SiteEmptyState";
 import SiteTableSkeleton from "components/SiteTableSkeleton";
 import fetcher from "@/utils/fetcher";
+import SiteTable from "components/SiteTable";
 
 const Dashboard = () => {
   const auth = useAuth();
   const { data, error } = useSWR("/api/sites", fetcher);
-
-  console.log(data);
 
   if (!data) {
     return (
@@ -21,7 +20,7 @@ const Dashboard = () => {
 
   return (
     <DashboardShell>
-      <EmptyState />
+      {data.sites ? <SiteTable sites={data.sites} /> : <EmptyState />}
     </DashboardShell>
   );
 };
