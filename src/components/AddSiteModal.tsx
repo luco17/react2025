@@ -32,7 +32,7 @@ export interface SiteData extends FormInputs {
   entryDate: string;
 }
 
-export default function AddSiteModal() {
+export default function AddSiteModal({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const { register, handleSubmit } = useForm<FormInputs>();
@@ -77,7 +77,7 @@ export default function AddSiteModal() {
           borderColor: "gray.300",
         }}
       >
-        Add your first site
+        {children}
       </Button>
 
       <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>

@@ -43,7 +43,7 @@ export default function EmptyState() {
             >
               Welcome 🌊, let's get started!
             </Text>
-            <AddSiteModal />
+            <AddSiteModal>Add your first site!</AddSiteModal>
           </Container>
         </Box>
       </Box>

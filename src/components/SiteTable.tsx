@@ -7,6 +7,7 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
+import { parseISO, format } from "date-fns";
 
 import { SiteData } from "./AddSiteModal";
 
@@ -32,7 +33,8 @@ const SiteTable = ({ sites }) => {
               <Td>{site.siteName}</Td>
               <Td>{site.siteUrl}</Td>
               <Td>Linko</Td>
-              <Td>{site.entryDate}</Td>
+              {/* <Td>{format(parseISO(site.entryDate), "PPpp")}</Td> */}
+              <Td>{format(parseISO(site.entryDate), "PP")}</Td>
             </Tr>
           ))}
         </Tbody>

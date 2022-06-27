@@ -20,9 +20,11 @@ import {
   BreadcrumbLink,
   Text,
   Heading,
+  Spacer,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useAuth } from "@/context/AuthContext";
+import AddSiteModal from "./AddSiteModal";
 
 const Links = ["Sites", "Feedback"];
 
@@ -116,17 +118,20 @@ export default function DashboardShell({ children }) {
         flexDirection="column"
         maxW="4xl"
         justifyContent="center"
-        ml="auto"
-        mr="auto"
+        mx="auto"
         my={16}
         px={8}
       >
-        <Breadcrumb>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink>Sites</BreadcrumbLink>
-          </BreadcrumbItem>
-          <Heading>Sites</Heading>
-        </Breadcrumb>
+        <Flex flexDirection="row" mb={4}>
+          <Breadcrumb>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink>Sites</BreadcrumbLink>
+            </BreadcrumbItem>
+            <Heading>Sites</Heading>
+          </Breadcrumb>
+          <Spacer />
+          <AddSiteModal>+ Add site</AddSiteModal>
+        </Flex>
         <Box>{children}</Box>
       </Flex>
     </>
