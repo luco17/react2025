@@ -18,6 +18,7 @@ import {
   ModalFooter,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { mutate } from "swr";
 
 import { createSite } from "@/lib/firestore";
 import { useAuth } from "@/context/AuthContext";
@@ -57,6 +58,13 @@ export default function AddSiteModal({ children }) {
       duration: 5000,
       isClosable: true,
     });
+    mutate(
+      "/api/sites",
+      async (data) => ({
+        sites: [{ ...newSite }, ...data.sites],
+      }),
+      false
+    );
     onClose();
   };
 
@@ -113,6 +121,7 @@ export default function AddSiteModal({ children }) {
               bg="teal.500"
               mr={3}
               type="submit"
+              color="white"
             >
               Create
             </Button>
