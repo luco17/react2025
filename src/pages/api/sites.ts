@@ -1,13 +1,7 @@
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { getAllSites } from "@/lib/dashboardAdmin";
 
-export default async (req, res) => {
-  const querySnapshot = await getDocs(collection(db, "sites"));
-  const sites = [];
-
-  querySnapshot.forEach((doc) => {
-    sites.push({ id: doc.id, ...doc.data() });
-  });
+export default async (_, res) => {
+  const sites = await getAllSites();
 
   res.status(200).json({ sites });
 };

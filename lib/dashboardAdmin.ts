@@ -1,4 +1,10 @@
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  QuerySnapshot,
+} from "firebase/firestore";
 
 import { db } from "./firebase";
 
@@ -25,4 +31,15 @@ export async function getAllFeedback(siteId: string) {
   });
 
   return { feedback };
+}
+
+export async function getAllSites() {
+  const snapshot = await getDocs(collection(db, "sites"));
+  const sites = [];
+
+  snapshot.forEach((doc) => {
+    sites.push({ id: doc.id, ...doc.data() });
+  });
+
+  return sites;
 }
