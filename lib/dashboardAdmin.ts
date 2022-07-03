@@ -1,36 +1,27 @@
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  QuerySnapshot,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { compareDesc, parseISO } from "date-fns";
 
 import { db } from "./firebase";
 
-interface Feedback {
-  id: string;
-  author: string;
-  authorId: string;
-  createdAt: string;
-  provider: string;
-  rating: number;
-  siteId: string;
-  status: string;
-  text: string;
-}
+export async function getAllFeedback(siteId: string | string[]) {
+  try {
+    const q = query(collection(db, "feedback"), where("siteId", "==", siteId));
 
-export async function getAllFeedback(siteId: string) {
-  const q = query(collection(db, "feedback"), where("siteId", "==", siteId));
+    const snapshot = await getDocs(q);
+    const feedback = [];
 
-  const snapshot = await getDocs(q);
-  const feedback = [];
+    snapshot.forEach((doc) => {
+      feedback.push({ id: doc.id, ...doc.data() });
+    });
 
-  snapshot.forEach((doc) => {
-    feedback.push({ id: doc.id, ...doc.data() });
-  });
+    feedback.sort((a, b) =>
+      compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
+    );
 
-  return { feedback };
+    return { feedback };
+  } catch (error) {
+    return { error };
+  }
 }
 
 export async function getAllSites() {
