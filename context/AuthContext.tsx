@@ -43,9 +43,10 @@ function useProviderAuth() {
   const [user, setUser] = useState<StoredUserInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const handleUser = (rawUser: User | null) => {
+  const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
-      const user = formatUser(rawUser);
+      const user = await formatUser(rawUser);
+      const { token, ...userWithoutToken } = user;
 
       setLoading(false);
       createUser(user);
@@ -86,12 +87,14 @@ function useProviderAuth() {
   };
 }
 
-const formatUser = (user: User) => {
+const formatUser = async (user: User) => {
+  const token = await user.getIdToken();
   return {
     uid: user.uid,
     email: user.email,
     displayName: user.displayName,
     providerId: user.providerData[0].providerId,
     photoUrl: user.photoURL,
+    token,
   };
 };
